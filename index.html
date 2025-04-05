@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alphabet Sound & Tracing App</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: #fefae0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: #fff8dc;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .letter-display h1 {
+      font-size: 6rem;
+      margin: 0;
+      color: #ff595e;
+    }
+
+    .letter-display h2 {
+      font-size: 2rem;
+      color: #1982c4;
+    }
+
+    .image-display img {
+      max-width: 250px;
+      height: auto;
+      margin: 20px auto;
+    }
+
+    .tracing-canvas {
+      margin: 20px 0;
+    }
+
+    canvas {
+      background: #ffffff;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      touch-action: none;
+    }
+
+    .controls button {
+      font-size: 1.2rem;
+      margin: 5px;
+      padding: 10px 20px;
+      background: #8ac926;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background: #6dbb20;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="letter-display">
+      <h1 id="letter">A</h1>
+      <h2 id="word">Apple</h2>
+    </div>
+    <div class="image-display">
+      <img id="image" src="images/apple.png" alt="Apple" />
+    </div>
+    <div class="tracing-canvas">
+      <canvas id="traceCanvas" width="500" height="300"></canvas>
+    </div>
+    <div class="controls">
+      <button onclick="prevLetter()">Previous</button>
+      <button onclick="speakLetter()">🔊 Speak</button>
+      <button onclick="nextLetter()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    const letters = [
+      { letter: "A", word: "Apple", image: "images/apple.png" },
+      { letter: "B", word: "Ball", image: "images/ball.png" },
+      { letter: "C", word: "Cat", image: "images/cat.png" },
+      { letter: "D", word: "Dog", image: "images/dog.png" },
+      { letter: "E", word: "Elephant", image: "images/elephant.png" },
+      { letter: "F", word: "Fish", image: "images/fish.png" },
+      { letter: "G", word: "Giraffe", image: "images/giraffe.png" },
+      { letter: "H", word: "Hat", image: "images/hat.png" },
+      { letter: "I", word: "Igloo", image: "images/igloo.png" },
+      { letter: "J", word: "Juice", image: "images/juice.png" },
+      { letter: "K", word: "Kite", image: "images/kite.png" },
+      { letter: "L", word: "Lion", image: "images/lion.png" },
+      { letter: "M", word: "Monkey", image: "images/monkey.png" },
+      { letter: "N", word: "Nest", image: "images/nest.png" },
+      { letter: "O", word: "Octopus", image: "images/octopus.png" },
+      { letter: "P", word: "Penguin", image: "images/penguin.png" },
+      { letter: "Q", word: "Queen", image: "images/queen.png" },
+      { letter: "R", word: "Rabbit", image: "images/rabbit.png" },
+      { letter: "S", word: "Sun", image: "images/sun.png" },
+      { letter: "T", word: "Tiger", image: "images/tiger.png" },
+      { letter: "U", word: "Umbrella", image: "images/umbrella.png" },
+      { letter: "V", word: "Violin", image: "images/violin.png" },
+      { letter: "W", word: "Whale", image: "images/whale.png" },
+      { letter: "X", word: "Xylophone", image: "images/xylophone.png" },
+      { letter: "Y", word: "Yoyo", image: "images/yoyo.png" },
+      { letter: "Z", word: "Zebra", image: "images/zebra.png" },
+    ];
+
+    let currentIndex = 0;
+    const letterEl = document.getElementById("letter");
+    const wordEl = document.getElementById("word");
+    const imageEl = document.getElementById("image");
+    const canvas = document.getElementById("traceCanvas");
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+
+    function updateContent() {
+      const current = letters[currentIndex];
+      letterEl.textContent = current.letter;
+      wordEl.textContent = current.word;
+      imageEl.src = current.image;
+      imageEl.alt = current.word;
+      clearCanvas();
+      drawDottedLetter(current.letter);
+    }
+
+    function speakLetter() {
+      const current = letters[currentIndex];
+      if (window.responsiveVoice) {
+        responsiveVoice.speak(`${current.letter} for ${current.word}`, "UK English Female");
+      } else {
+        alert("Text-to-speech not available. Please check your internet connection or ensure the ResponsiveVoice library is properly loaded.");
+      }
+    }
+
+    function prevLetter() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateContent();
+      }
+    }
+
+    function nextLetter() {
+      if (currentIndex < letters.length - 1) {
+        currentIndex++;
+        updateContent();
+      }
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawDottedLetter(letter) {
+      ctx.font = "150px Comic Sans MS";
+      ctx.fillStyle = "#dddddd";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.setLineDash([5, 15]);
+      ctx.strokeStyle = "#cccccc";
+      ctx.lineWidth = 2;
+      ctx.strokeText(letter.toUpperCase(), canvas.width / 2, canvas.height / 3);
+      ctx.strokeText(letter.toLowerCase(), canvas.width / 2, (2 * canvas.height) / 3);
+      ctx.setLineDash([]);
+    }
+
+    canvas.addEventListener("mousedown", (e) => {
+      drawing = true;
+      ctx.beginPath();
+      ctx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    canvas.addEventListener("mousemove", (e) => {
+      if (drawing) {
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 3;
+        ctx.setLineDash([]);
+        ctx.stroke();
+      }
+    });
+
+    canvas.addEventListener("mouseup", () => (drawing = false));
+    canvas.addEventListener("mouseleave", () => (drawing = false));
+
+    // Touch support
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      drawing = true;
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      ctx.beginPath();
+      ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    });
+
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (drawing) {
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 3;
+        ctx.setLineDash([]);
+        ctx.stroke();
+      }
+    });
+
+    canvas.addEventListener("touchend", () => (drawing = false));
+
+    // Load ResponsiveVoice dynamically with fallback
+    const rvScript = document.createElement("script");
+    rvScript.src = "https://code.responsivevoice.org/responsivevoice.js";
+    rvScript.onload = () => console.log("ResponsiveVoice loaded successfully.");
+    rvScript.onerror = () => console.error("Failed to load ResponsiveVoice. TTS will not work.");
+    document.body.appendChild(rvScript);
+
+    // Init
+    updateContent();
+  </script>
+</body>
+</html>
