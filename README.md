@@ -1,5 +1,7 @@
 # LearnIT
 
+Link to application https://nanakzy.github.io/LearnIT/
+
 Welcome to the LearnIT wiki!
 
 **Alphabet Sound & Tracing**
