@@ -74,5 +74,4 @@ Commit your changes and push to your fork.
 
 Open a pull request from your fork to this repository.
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
