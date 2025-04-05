@@ -54,7 +54,7 @@ ResponsiveVoice: The app uses ResponsiveVoice for speaking out the letters and w
 
 Clone the Repository:
 
-git clone https://github.com/nanakzy@gmail.com/LearnIT.git
+git clone https://github.com/Nanakzy/LearnIT.git
 cd LearnIT
 Open the Application: Open index.html in your browser to start using the app.
 
