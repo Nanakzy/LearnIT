@@ -3,236 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alphabet Sound & Tracing App</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Welcome to LearnIT</title>
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"></script>
   <style>
     body {
       font-family: 'Comic Sans MS', sans-serif;
-      background: #fefae0;
+      background-color: #fefae0;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      color: #333;
     }
 
     .container {
       text-align: center;
       max-width: 700px;
       margin: auto;
-      padding: 20px;
+      padding: 40px;
       background: #fff8dc;
       border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid #ff595e;
     }
 
-    .letter-display h1 {
-      font-size: 6rem;
-      margin: 0;
+    h1 {
+      font-size: 4rem;
       color: #ff595e;
-    }
-
-    .letter-display h2 {
-      font-size: 2rem;
-      color: #1982c4;
-    }
-
-    .image-display img {
-      max-width: 250px;
-      height: auto;
-      margin: 20px auto;
-    }
-
-    .tracing-canvas {
       margin: 20px 0;
     }
 
-    canvas {
-      background: #ffffff;
-      border: 2px dashed #ccc;
-      border-radius: 10px;
-      touch-action: none;
+    h2 {
+      font-size: 2rem;
+      color: #1982c4;
+      margin: 20px 0;
     }
 
-    .controls button {
+    .welcome-message {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 40px;
+    }
+
+    .cta-button {
       font-size: 1.2rem;
-      margin: 5px;
-      padding: 10px 20px;
+      padding: 15px 30px;
       background: #8ac926;
       color: white;
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      text-decoration: none;
     }
 
-    .controls button:hover {
+    .cta-button:hover {
       background: #6dbb20;
     }
+
+    .image {
+      max-width: 200px;
+      margin-top: 30px;
+    }
+
+    .cta-button {
+  font-size: 1.5rem;
+  padding: 15px 30px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.cta-button:hover {
+  background-color: #45a049;
+}
+
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="letter-display">
-      <h1 id="letter">A</h1>
-      <h2 id="word">Apple</h2>
+    <h1>Welcome to LearnIT</h1>
+    <h2>Created by Nana Khuzwayo</h2>
+    <p class="welcome-message">Specially created to help beginners learn how to read and write!</p>
+    
+    <div class="image">
+      <img src="images/kids_learning.png" alt="Kids Learning" />
     </div>
-    <div class="image-display">
-      <img id="image" src="images/apple.png" alt="Apple" />
+    
+    <!-- CTA Button -->
+    <div class="cta-section">
+      <a href="index.html" class="cta-button">Start Learning!</a>
     </div>
-    <div class="tracing-canvas">
-      <canvas id="traceCanvas" width="500" height="300"></canvas>
-    </div>
-    <div class="controls">
-      <button onclick="prevLetter()">Previous</button>
-      <button onclick="speakLetter()">🔊 Speak</button>
-      <button onclick="nextLetter()">Next</button>
-    </div>
+
+  
   </div>
 
   <script>
-    const letters = [
-      { letter: "a", word: "apple", image: "images/apple.png" },
-      { letter: "b", word: "ball", image: "images/ball.png" },
-      { letter: "c", word: "cat", image: "images/cat.png" },
-      { letter: "d", word: "dog", image: "images/dog.png" },
-      { letter: "e", word: "elephant", image: "images/elephant.png" },
-      { letter: "f", word: "fish", image: "images/fish.png" },
-      { letter: "g", word: "giraffe", image: "images/giraffe.png" },
-      { letter: "h", word: "hat", image: "images/hat.png" },
-      { letter: "i", word: "igloo", image: "images/igloo.png" },
-      { letter: "j", word: "juice", image: "images/juice.png" },
-      { letter: "k", word: "kite", image: "images/kite.png" },
-      { letter: "l", word: "lion", image: "images/lion.png" },
-      { letter: "m", word: "monkey", image: "images/monkey.png" },
-      { letter: "n", word: "nest", image: "images/nest.png" },
-      { letter: "o", word: "orange", image: "images/orange.png" },
-      { letter: "p", word: "pig", image: "images/pig.png" },
-      { letter: "q", word: "queen", image: "images/queen.png" },
-      { letter: "r", word: "rabbit", image: "images/rabbit.png" },
-      { letter: "s", word: "sun", image: "images/sun.png" },
-      { letter: "t", word: "tree", image: "images/tree.png" },
-      { letter: "u", word: "umbrella", image: "images/umbrella.png" },
-      { letter: "v", word: "van", image: "images/van.png" },
-      { letter: "w", word: "whale", image: "images/whale.png" },
-      { letter: "x", word: "xylophone", image: "images/xylophone.png" },
-      { letter: "y", word: "yoyo", image: "images/yoyo.png" },
-      { letter: "z", word: "zebra", image: "images/zebra.png" },
-    ];
-
-    let currentIndex = 0;
-    const letterEl = document.getElementById("letter");
-    const wordEl = document.getElementById("word");
-    const imageEl = document.getElementById("image");
-    const canvas = document.getElementById("traceCanvas");
-    const ctx = canvas.getContext("2d");
-    let drawing = false;
-    let isEraserActive = false;
-
-    function updateContent() {
-      const current = letters[currentIndex];
-      letterEl.textContent = current.letter;
-      wordEl.textContent = current.word;
-      imageEl.src = current.image;
-      imageEl.alt = current.word;
-      clearCanvas();
-      drawDottedLetter(current.letter);
+    // Announce the welcome message when the page loads
+    window.onload = function() {
+      responsiveVoice.speak("Welcome to LearnIT, specially created by Nana Khuzwayo to help you read and write.", "UK English Female");
     }
-
-
-    function speakLetter() {
-      const current = letters[currentIndex];
-      if (window.responsiveVoice) {
-        responsiveVoice.speak(`${current.letter} for ${current.word}`, "UK English Female");
-      } else {
-        alert("Text-to-speech not available. Please check your internet connection or ensure the ResponsiveVoice library is properly loaded.");
-      }
-    }
-
-    function prevLetter() {
-      if (currentIndex > 0) {
-        currentIndex--;
-        updateContent();
-      }
-    }
-
-    function nextLetter() {
-      if (currentIndex < letters.length - 1) {
-        currentIndex++;
-        updateContent();
-      }
-    }
-
-    function clearCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    function drawDottedLetter(letter) {
-      ctx.font = "150px Comic Sans MS";
-      ctx.fillStyle = "#dddddd";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.setLineDash([5, 15]);
-      ctx.strokeStyle = "#333333";
-      ctx.lineWidth = 2;
-      ctx.strokeText(letter.toUpperCase(), canvas.width / 2, canvas.height / 3);
-      ctx.strokeText(letter.toLowerCase(), canvas.width / 2, (2 * canvas.height) / 3);
-      ctx.setLineDash([]);
-    }
-
-    canvas.addEventListener("mousedown", (e) => {
-      drawing = true;
-      ctx.beginPath();
-      ctx.moveTo(e.offsetX, e.offsetY);
-    });
-
-    canvas.addEventListener("mousemove", (e) => {
-      if (drawing) {
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 3;
-        ctx.setLineDash([]);
-        ctx.stroke();
-      }
-    });
-
-    canvas.addEventListener("mouseup", () => (drawing = false));
-    canvas.addEventListener("mouseleave", () => (drawing = false));
-
-    // Touch support
-    canvas.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      drawing = true;
-      const rect = canvas.getBoundingClientRect();
-      const touch = e.touches[0];
-      ctx.beginPath();
-      ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
-    });
-
-    canvas.addEventListener("touchmove", (e) => {
-      e.preventDefault();
-      if (drawing) {
-        const rect = canvas.getBoundingClientRect();
-        const touch = e.touches[0];
-        ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
-        ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 3;
-        ctx.setLineDash([]);
-        ctx.stroke();
-      }
-    });
-
-    canvas.addEventListener("touchend", () => (drawing = false));
-
-    // Load ResponsiveVoice dynamically with fallback
-    const rvScript = document.createElement("script");
-    rvScript.src = "https://code.responsivevoice.org/responsivevoice.js";
-    rvScript.onload = () => console.log("ResponsiveVoice loaded successfully.");
-    rvScript.onerror = () => console.error("Failed to load ResponsiveVoice. TTS will not work.");
-    document.body.appendChild(rvScript);
-
-    // Init
-    updateContent();
   </script>
 </body>
 </html>
