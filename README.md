@@ -1,6 +1,6 @@
 # LearnIT
-
-Link to application https://nanakzy.github.io/LearnIT/
+Link to Deployed application on Vercel https://learn-it-eta.vercel.app/
+Link to github pages application https://nanakzy.github.io/LearnIT/
 
 Welcome to the LearnIT wiki!
 
