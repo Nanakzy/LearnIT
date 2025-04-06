@@ -127,6 +127,7 @@
     const canvas = document.getElementById("traceCanvas");
     const ctx = canvas.getContext("2d");
     let drawing = false;
+    let isEraserActive = false;
 
     function updateContent() {
       const current = letters[currentIndex];
@@ -137,6 +138,7 @@
       clearCanvas();
       drawDottedLetter(current.letter);
     }
+
 
     function speakLetter() {
       const current = letters[currentIndex];
@@ -171,7 +173,7 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.setLineDash([5, 15]);
-      ctx.strokeStyle = "#cccccc";
+      ctx.strokeStyle = "#333333";
       ctx.lineWidth = 2;
       ctx.strokeText(letter.toUpperCase(), canvas.width / 2, canvas.height / 3);
       ctx.strokeText(letter.toLowerCase(), canvas.width / 2, (2 * canvas.height) / 3);
