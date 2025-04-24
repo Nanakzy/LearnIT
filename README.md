@@ -62,16 +62,6 @@ Open the Application: Open index.html in your browser to start using the app.
 
 open index.html
 
-**Contributions**
-
-Feel free to fork and submit pull requests! Here's how you can contribute:
-
-Fork the repository.
-
-Create a branch for your feature or bug fix.
-
-Commit your changes and push to your fork.
-
-Open a pull request from your fork to this repository.
+*****************************************************************************************************************************************************************************************
 
 
